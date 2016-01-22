@@ -13,12 +13,14 @@ def testOneFile(inputFname, outputFname):
         for line in f:
             inputStrings.append(line.strip())
     
-    # testStrings = []
-    # with open(outputFname,'rb') as f:
-    #     for testLine in f:
-    #         testStrings.append(testLine.strip())
-    
-    solverOutput = solver(inputStrings[1:])#, testStrings)
+    testStrings = []
+    with open(outputFname,'rb') as f:
+        for testLine in f:
+            testStrings.append(testLine.strip())
+#             print len(testLine)
+    print
+    solverOutput = testSolver(inputStrings[1:], testStrings)
+#     solverOutput = solver(inputStrings[1:])#, testStrings)
     
     print
     for solverLine in solverOutput:
@@ -41,7 +43,7 @@ def testOneFile(inputFname, outputFname):
     
 if __name__ == '__main__':
     
-    num = '02'
+    num = 'FD'
 
     inputFname  = 'data1/Input' + num + '.txt'
     outputFname = 'data1/Output'+ num + '.txt'  

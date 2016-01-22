@@ -64,7 +64,9 @@ class testOutputString(outputString):
     
     def append(self,other):
         self.stringOp.append(other)
-        if self.stringOp[-1] != self.testString[len(self.stringOp)-1]:
+        
+        if len(self.stringOp) > len(self.testString) or \
+                self.stringOp[-1] != self.testString[len(self.stringOp)-1]:
             #print self.stringOp[-1], self.testString[len(self.stringOp)-1]
             raise testSolverMistmatchException()        
         return self.stringOp
@@ -123,10 +125,10 @@ def solveString(stringI,i,stringJ,j,stringOp):
     #           - they're different     
 
     if stringI[i] == stringJ[j]:
-#         print "a"
+        print "a"
         iOp, jOp = solveSame(stringI,i,stringJ,j,stringOp)
     else:
-#         print "b"
+        print "b"
         iOp, jOp = solveDiff(stringI, i, stringJ, j, stringOp)    
         
     return iOp, jOp
@@ -142,20 +144,33 @@ def solveDiff(stringI, i, stringJ, j, stringOp):
             stringOp.append(stringJ[j])
             jOp += 1
     except testSolverMistmatchException:
+        print len(stringI), len(stringJ)
+        print len(stringOp.testString)
         print iOp, jOp
         print len(stringOp)
-        print "".join(stringOp[-10:])
-        print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
-        print "".join(stringI[i-10:i+3])
-        print "".join(stringJ[j-10:j+1])
-        raise testSolverMistmatchException
+        print stringI, stringJ[jOp]
+#         print "".join(stringOp[-10:])
+#         print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
+#         print "".join(stringI[i-10:i+3])
+#         print "".join(stringJ[j-10:j+1])
+        exit()
         
     return iOp, jOp
     
 
 def solveSame(stringI,i,stringJ,j,stringOp):
     
-    stringOp.append(stringI[i])
+    try:
+        stringOp.append(stringI[i])
+    except testSolverMistmatchException:
+        print "".join(stringOp[-10:])
+        print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
+        print "".join(stringI[i-10:i+2])
+        print "".join(stringJ[j-10:j+2])
+        print i, j
+        exit()
+        
+        
     oD = 1
     pD = 0
     

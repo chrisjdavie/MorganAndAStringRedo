@@ -6,6 +6,7 @@ Created on 22 Jan 2016
 @author: chris
 '''
 
+
 def solver(inputStrings):
     output = []
     for stringI, stringJ in zip(inputStrings[::2],inputStrings[1::2]):
@@ -56,7 +57,6 @@ def solveString(stringI,i,stringJ,j,stringOp):
 def solveDiff(stringI, i, stringJ, j, stringOp):
     iOp = i
     jOp = j
-    
     if stringI[i] < stringJ[j]:
         stringOp.append(stringI[i])
         iOp += 1
@@ -106,7 +106,7 @@ def solveSame(stringI,i,stringJ,j,stringOp):
         iOp = i + oD
         jOp = j + oD
         
-    if minChar < char0:
+    if minChar <= char0:
         if stringI[i+pD] < stringI[i+oD]:
             stringOp.append(stringI[i+pD])
             oD += 1
@@ -118,10 +118,8 @@ def solveSame(stringI,i,stringJ,j,stringOp):
         else:
             iOp = i + pD
             jOp = j + oD - pD
+        
 #     
-#     print stringOp, iOp, jOp
-#     raw_input("bleh")
-    
     return iOp, jOp
 
 if __name__ == '__main__':
