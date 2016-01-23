@@ -54,23 +54,29 @@ class testOutputString(outputString):
         self.iOp = 0
         self.stringOp = []
         self.testString = testString
+        
+        self.iBreak = 30004096 + 3
     
     def __iadd__(self, other):
         self.stringOp += other
-        if self.stringOp[-1] != self.testString[len(self.stringOp)-1]:
-            #print self.stringOp[-1], self.testString[len(self.stringOp)-1]
-            raise testSolverMistmatchException()
+        
+        self.testStr()
+        
         return self.stringOp
     
     def append(self,other):
+        
         self.stringOp.append(other)
         
-        if len(self.stringOp) > len(self.testString) or \
-                self.stringOp[-1] != self.testString[len(self.stringOp)-1]:
-            #print self.stringOp[-1], self.testString[len(self.stringOp)-1]
-            raise testSolverMistmatchException()        
+        self.testStr()
+        
         return self.stringOp
     
+    def testStr(self):
+        if self.testString[:len(self.stringOp)] != "".join(self.stringOp):
+#             print self.testString[:len(self.stringOp)]
+#             print self.stringOp
+            raise testSolverMistmatchException
     
 def testSolver(inputStrings, testStrings):
     output = []
@@ -125,10 +131,10 @@ def solveString(stringI,i,stringJ,j,stringOp):
     #           - they're different     
 
     if stringI[i] == stringJ[j]:
-        print "a"
+#         print "a"
         iOp, jOp = solveSame(stringI,i,stringJ,j,stringOp)
     else:
-        print "b"
+#         print "b"
         iOp, jOp = solveDiff(stringI, i, stringJ, j, stringOp)    
         
     return iOp, jOp
@@ -144,15 +150,16 @@ def solveDiff(stringI, i, stringJ, j, stringOp):
             stringOp.append(stringJ[j])
             jOp += 1
     except testSolverMistmatchException:
-        print len(stringI), len(stringJ)
-        print len(stringOp.testString)
+        print "solveDiff"
+#         print len(stringI), len(stringJ)
+#         print len(stringOp.testString)
         print iOp, jOp
-        print len(stringOp)
-        print stringI, stringJ[jOp]
-#         print "".join(stringOp[-10:])
-#         print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
-#         print "".join(stringI[i-10:i+3])
-#         print "".join(stringJ[j-10:j+1])
+#         print len(stringOp)
+#         print stringI[iOp], stringJ[jOp]
+        print "".join(stringOp[-10:])
+        print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
+#         print "".join(stringI[i-10:i+2])
+#         print "".join(stringJ[j-10:j+2])
         exit()
         
     return iOp, jOp
@@ -163,10 +170,11 @@ def solveSame(stringI,i,stringJ,j,stringOp):
     try:
         stringOp.append(stringI[i])
     except testSolverMistmatchException:
-        print "".join(stringOp[-10:])
-        print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
-        print "".join(stringI[i-10:i+2])
-        print "".join(stringJ[j-10:j+2])
+        print "solveSame a"
+#         print "".join(stringOp[-10:])
+#         print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
+#         print "".join(stringI[i-10:i+2])
+#         print "".join(stringJ[j-10:j+2])
         print i, j
         exit()
         
@@ -176,19 +184,24 @@ def solveSame(stringI,i,stringJ,j,stringOp):
     
     char0 = stringI[i]
     comparison = False
+    rerunGap = True
     
     while i + oD < len(stringI) and j + oD < len(stringJ) \
             and stringI[i+oD] == stringJ[j+oD] \
             and stringI[i+pD] >= stringI[i+oD]:
+        
         if stringI[i+oD] <= stringI[i+pD]:
             stringOp.append(stringI[i+oD])
             oD += 1
+            if stringI[i+oD] != stringI[i+pD]:
+                rerunGap = True
         
         if comparison:
             pD += 1
         
-        if stringI[i+oD] == stringI[i]:
+        if stringI[i+oD] == stringI[i] and rerunGap:
             comparison = True
+            rerunGap = False
             pD = 0
     
     
@@ -201,9 +214,39 @@ def solveSame(stringI,i,stringJ,j,stringOp):
     
     
     if minChar > char0:
-        stringOp += stringI[i+pD:i+oD-pD]
-        stringOp += 2*stringI[i+oD-pD:i+oD]
         
+        if pD == 0:
+            stringOp += stringI[i:i+oD]
+            
+        else:
+            drawFromFront = None
+            lD = oD
+            for K in range(0,pD):
+                mD = pD + K
+                lD = oD - pD + K
+                if stringI[i+mD] == stringI[i+lD]:
+                    try:
+                        stringOp.append(stringI[i+mD])
+                    except testSolverMistmatchException:
+                        print i, j, pD, oD, lD, mD
+                        exit()
+                elif stringI[i+mD] > stringI[i+lD]:
+                    drawFromFront = False
+                    break
+                elif stringI[i+mD] < stringI[i+lD]:
+                    drawFromFront = True
+                    break
+            else:
+                stringOp.pop()
+                lD = oD
+            
+            if drawFromFront:
+                stringOp += stringI[i+mD:i+oD]
+                stringOp += stringI[i+oD-pD:i+oD]
+            else:
+                stringOp += stringI[i+lD:i+oD]
+                stringOp += stringI[i:i+oD]
+            
         iOp = i + oD
         jOp = j + oD
         
@@ -218,21 +261,21 @@ def solveSame(stringI,i,stringJ,j,stringOp):
             pD = 0
         else:
             pD = 0
-        
-        print minCharSide, pD, oD
+#         
+#         print minCharSide, pD, oD
         if minCharSide == 'i':
             jOp = j + pD
             iOp = i + oD - pD
         else:
             iOp = i + pD
             jOp = j + oD - pD
-    
-    print stringOp, minChar
-    print stringI, stringJ
-    print iOp, jOp
-    
+#      
+#     print stringOp, minChar
+#     print stringI, stringJ
+#     print iOp, jOp
+#       
 #     exit()
-#     
+# #     
     return iOp, jOp
 
 if __name__ == '__main__':

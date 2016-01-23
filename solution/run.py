@@ -21,10 +21,10 @@ def testOneFile(inputFname, outputFname):
     print
     solverOutput = testSolver(inputStrings[1:], testStrings)
 #     solverOutput = solver(inputStrings[1:])#, testStrings)
-    
-    print
-    for solverLine in solverOutput:
-        print solverLine
+#     
+#     print
+#     for solverLine in solverOutput:
+#         print solverLine
     
     
     with open(outputFname,'rb') as f:
@@ -34,16 +34,18 @@ def testOneFile(inputFname, outputFname):
             if testLine != solverLine:
                 for i, (charTest, charSolver) in enumerate(zip(testLine, solverLine)):
                     if charTest != charSolver:
-                        print i
-                        print inputStrings
-                        print testLine
-                        print solverLine
+                        print i, charTest, charSolver
+                        print testLine[i-10:i+2]
+                        print solverLine[i-10:i+2]
+#                         print inputStrings
+#                         print testLine
+#                         print solverLine
                         raw_input("Press any key to continue testing")
-                raw_input("Press any key to continue testing")
+                        break
     
 if __name__ == '__main__':
     
-    num = 'FD'
+    num = 'FG'
 
     inputFname  = 'data1/Input' + num + '.txt'
     outputFname = 'data1/Output'+ num + '.txt'  
