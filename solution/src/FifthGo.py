@@ -208,17 +208,30 @@ def solveSame(stringI,i,stringJ,j,stringOp):
         jOp = j + oD
         
     if minChar <= char0:
-        if stringI[i+pD] < stringI[i+oD]:
+        if stringI[i+pD] < minChar:
             stringOp.append(stringI[i+pD])
             oD += 1
-            pD += 1  
+            pD += 1
+        elif stringI[i+pD] > minChar:
+            stringOp.append(minChar)
+            oD += 1
+            pD = 0
+        else:
+            pD = 0
         
+        print minCharSide, pD, oD
         if minCharSide == 'i':
             jOp = j + pD
             iOp = i + oD - pD
         else:
             iOp = i + pD
             jOp = j + oD - pD
+    
+    print stringOp, minChar
+    print stringI, stringJ
+    print iOp, jOp
+    
+#     exit()
 #     
     return iOp, jOp
 
