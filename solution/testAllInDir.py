@@ -16,7 +16,7 @@ if __name__ == '__main__':
     print inputFileNames
     for inputFname in inputFileNames:
         idF = inputFname[5:7]
-        if idF.isalpha():
+        if True:#idF.isalpha():
             outputFname = 'Output' + idF + '.txt'
             print inputFname
             testOneFile(dirTest + inputFname, dirTest + outputFname)

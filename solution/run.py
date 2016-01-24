@@ -34,9 +34,9 @@ def testOneFile(inputFname, outputFname):
             if testLine != solverLine:
                 for i, (charTest, charSolver) in enumerate(zip(testLine, solverLine)):
                     if charTest != charSolver:
-                        print i, charTest, charSolver
-                        print testLine[i-10:i+2]
-                        print solverLine[i-10:i+2]
+#                         print i, charTest, charSolver
+#                         print testLine[i-10:i+2]
+#                         print solverLine[i-10:i+2]
 #                         print inputStrings
 #                         print testLine
 #                         print solverLine
@@ -45,7 +45,7 @@ def testOneFile(inputFname, outputFname):
     
 if __name__ == '__main__':
     
-    num = 'FG'
+    num = '11'
 
     inputFname  = 'data1/Input' + num + '.txt'
     outputFname = 'data1/Output'+ num + '.txt'  

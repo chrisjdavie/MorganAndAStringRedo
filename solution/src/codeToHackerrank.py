@@ -35,7 +35,6 @@ def mergeStrings(stringI, stringJ, stringOp):
         k += 1
             
         i, j = solveString(stringI, i, stringJ, j, stringOp)
-        #print "".join(stringOp)
     return stringOp
 
 def solveString(stringI,i,stringJ,j,stringOp):
@@ -46,10 +45,8 @@ def solveString(stringI,i,stringJ,j,stringOp):
     #           - they're different     
 
     if stringI[i] == stringJ[j]:
-#         print "a"
         iOp, jOp = solveSame(stringI,i,stringJ,j,stringOp)
     else:
-#         print "b"
         iOp, jOp = solveDiff(stringI, i, stringJ, j, stringOp)    
         
     return iOp, jOp
@@ -68,27 +65,35 @@ def solveDiff(stringI, i, stringJ, j, stringOp):
     
 
 def solveSame(stringI,i,stringJ,j,stringOp):
-    
-    stringOp.append(stringI[i])
-    
+        
+        
     oD = 1
     pD = 0
     
     char0 = stringI[i]
     comparison = False
+    if stringI[i+oD] != stringI[i+pD]:
+        rerunGap = True
+    else:
+        rerunGap = False
     
     while i + oD < len(stringI) and j + oD < len(stringJ) \
             and stringI[i+oD] == stringJ[j+oD] \
             and stringI[i+pD] >= stringI[i+oD]:
+        
         if stringI[i+oD] <= stringI[i+pD]:
-            stringOp.append(stringI[i+oD])
+#             stringOp.append(stringI[i+oD])
             oD += 1
         
         if comparison:
             pD += 1
+
+        if stringI[i+oD] != stringI[i+pD]:
+                rerunGap = True            
         
-        if stringI[i+oD] == stringI[i]:
+        if stringI[i+oD] == stringI[i] and rerunGap:
             comparison = True
+            rerunGap = False
             pD = 0
     
     
@@ -99,41 +104,67 @@ def solveSame(stringI,i,stringJ,j,stringOp):
         minCharSide = 'i'
         minChar = stringI[i+oD]
     
-    
     if minChar > char0:
-        stringOp += stringI[i+pD:i+oD-pD]
-        stringOp += 2*stringI[i+oD-pD:i+oD]
+        if pD == 0 or oD - pD == pD:
+            stringOp += 2*stringI[i:i+oD]
+            iOp = i + oD
+            jOp = j + oD            
+            
+        else:
+            drawFromFront = None
+            lD = oD
+            for K in range(0,pD):
+                mD = pD + K
+                lD = oD - pD + K
+                
+                if stringI[i+mD] > stringI[i+lD]:
+                    drawFromFront = False
+                    break
+                elif stringI[i+mD] < stringI[i+lD]:
+                    drawFromFront = True
+                    break
+            else:
+                stringOp.pop()
+                lD = oD
+                
+            if drawFromFront:
+                
+                stringOp += stringI[i:i+oD-pD]
+                stringOp += stringI[i:i+pD]
+                iOp = i + oD-pD
+                jOp = j + pD          
+                
+            else:
+                stringOp += 2*stringI[i:i+oD]
+                iOp = i + oD
+                jOp = j + oD          
+                
+            
         
-        iOp = i + oD
-        jOp = j + oD
         
     if minChar <= char0:
         if stringI[i+pD] < minChar:
-            stringOp.append(stringI[i+pD])
             oD += 1
             pD += 1
         elif stringI[i+pD] > minChar:
-            stringOp.append(minChar)
             oD += 1
             pD = 0
         else:
             pD = 0
-#         
-#         print minCharSide, pD, oD
+ 
         if minCharSide == 'i':
             jOp = j + pD
             iOp = i + oD - pD
+            stringOp += stringI[i:iOp]
+            stringOp += stringJ[j:jOp]
         else:
             iOp = i + pD
             jOp = j + oD - pD
-#     
-#     print stringOp, minChar
-#     print stringI, stringJ
-#     print iOp, jOp
-#     
-#     exit()
-#     
+            stringOp += stringJ[j:jOp]
+            stringOp += stringI[i:iOp]
+    
     return iOp, jOp
+
 
 if __name__ == '__main__':
     inputStrings = []
