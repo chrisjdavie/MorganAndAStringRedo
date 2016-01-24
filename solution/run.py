@@ -32,8 +32,17 @@ def testOneFile(inputFname, outputFname):
             testLine = testLine.strip()
             print testLine == solverLine
             if testLine != solverLine:
+                
+                print len(testLine), len(solverLine)
+                if len(testLine) != len(solverLine):
+                    print "lengths not equal"
+                    print testLine[-4:]
+                    print solverLine[-2:]
+                    raw_input("Press any key to continue testing")
                 for i, (charTest, charSolver) in enumerate(zip(testLine, solverLine)):
                     if charTest != charSolver:
+                        print testLine[i-4:]
+                        print solverLine[i-2:]
 #                         print i, charTest, charSolver
 #                         print testLine[i-10:i+2]
 #                         print solverLine[i-10:i+2]
@@ -45,7 +54,7 @@ def testOneFile(inputFname, outputFname):
     
 if __name__ == '__main__':
     
-    num = '11'
+    num = 'FM'
 
     inputFname  = 'data1/Input' + num + '.txt'
     outputFname = 'data1/Output'+ num + '.txt'  

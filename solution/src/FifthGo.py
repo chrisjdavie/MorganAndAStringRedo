@@ -119,6 +119,7 @@ def mergeStrings(stringI, stringJ, stringOp):
     
     k = 0
     while i < len(stringI) - 1 or j < len(stringJ) - 1:
+#         print len(stringOp)
         k += 1
             
         i, j = solveString(stringI, i, stringJ, j, stringOp)
@@ -242,25 +243,30 @@ def solveSame(stringI,i,stringJ,j,stringOp):
 #                 stringOp.pop()
                 lD = oD
             
-            if drawFromFront:
-                stringOp += stringI[i:i+oD-pD]
-                stringOp += stringI[i:i+pD]
-                iOp = i + oD-pD
-                jOp = j + pD          
-                
+            if drawFromFront != None:
+                if drawFromFront:
+                    stringOp += stringI[i:i+oD-pD]
+                    stringOp += stringI[i:i+pD]
+                    iOp = i + oD-pD
+                    jOp = j + pD          
+                    
+                else:
+#                     print minChar, char0
+#                     print i, j
+#                     print oD, pD
+#                     print "".join(stringI[i:i+oD])
+#                     print "".join(stringJ[j:j+oD])
+#                     print "".join(2*stringI[i:i+oD])
+                    stringOp += 2*stringI[i:i+oD]
+                    iOp = i + oD
+                    jOp = j + oD  
             else:
-                print minChar, char0
-                print i, j
-                print oD, pD
-                print "".join(stringI[i:i+oD])
-                print "".join(stringJ[j:j+oD])
-                print "".join(2*stringI[i:i+oD])
-                stringOp += 2*stringI[i:i+oD]
-                iOp = i + oD
-                jOp = j + oD   
+                stringOp += 2*stringI[i:i+oD-pD]
+                stringOp += 2*stringI[i+oD-pD:i+oD]
                 
-#             print "".join(stringOp)
-            
+                iOp = i + oD
+                jOp = j + oD    
+                
         
         
     if minChar <= char0:

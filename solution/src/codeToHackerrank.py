@@ -64,7 +64,19 @@ def solveDiff(stringI, i, stringJ, j, stringOp):
     return iOp, jOp
     
 
+
 def solveSame(stringI,i,stringJ,j,stringOp):
+    
+#     try:
+#         stringOp.append(stringI[i])
+#     except testSolverMistmatchException:
+#         print "solveSame a"
+# #         print "".join(stringOp[-10:])
+# #         print "".join(stringOp.testString[len(stringOp)-10:len(stringOp)])
+# #         print "".join(stringI[i-10:i+2])
+# #         print "".join(stringJ[j-10:j+2])
+#         print i, j
+#         exit()
         
         
     oD = 1
@@ -105,6 +117,7 @@ def solveSame(stringI,i,stringJ,j,stringOp):
         minChar = stringI[i+oD]
     
     if minChar > char0:
+#         print oD, pD
         if pD == 0 or oD - pD == pD:
             stringOp += 2*stringI[i:i+oD]
             iOp = i + oD
@@ -124,22 +137,33 @@ def solveSame(stringI,i,stringJ,j,stringOp):
                     drawFromFront = True
                     break
             else:
-                stringOp.pop()
+#                 stringOp.pop()
                 lD = oD
-                
-            if drawFromFront:
-                
-                stringOp += stringI[i:i+oD-pD]
-                stringOp += stringI[i:i+pD]
-                iOp = i + oD-pD
-                jOp = j + pD          
-                
-            else:
-                stringOp += 2*stringI[i:i+oD]
-                iOp = i + oD
-                jOp = j + oD          
-                
             
+            if drawFromFront != None:
+                if drawFromFront:
+                    stringOp += stringI[i:i+oD-pD]
+                    stringOp += stringI[i:i+pD]
+                    iOp = i + oD-pD
+                    jOp = j + pD          
+                    
+                else:
+#                     print minChar, char0
+#                     print i, j
+#                     print oD, pD
+#                     print "".join(stringI[i:i+oD])
+#                     print "".join(stringJ[j:j+oD])
+#                     print "".join(2*stringI[i:i+oD])
+                    stringOp += 2*stringI[i:i+oD]
+                    iOp = i + oD
+                    jOp = j + oD  
+            else:
+                stringOp += 2*stringI[i:i+oD-pD]
+                stringOp += 2*stringI[i+oD-pD:i+oD]
+                
+                iOp = i + oD
+                jOp = j + oD    
+                
         
         
     if minChar <= char0:
